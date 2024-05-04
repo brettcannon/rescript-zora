@@ -44,4 +44,3 @@ let resultOk = (zora: t, actual: Belt.Result.t<'a, 'b>, check: (t, 'a) => unit) 
   | Belt.Result.Ok(value) => zora->check(value)
   }
 }
-

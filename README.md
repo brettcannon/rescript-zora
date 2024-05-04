@@ -1,25 +1,25 @@
 # rescript-zora: Lightning-fast unit tests
 
-This package provides [Rescript](https://rescript-lang.org/) bindings for the
-[Zora](https://github.com/lorenzofox3/zora) testing framework. Rescript and Zora
+This package provides [ReScript](https://rescript-lang.org/) bindings for the
+[Zora](https://github.com/lorenzofox3/zora) testing framework. ReScript and Zora
 go very well together because they have a common mission of SPEED.
 
 In the interest of maintaining that speed, this package is asynchronous by
 default, though you can create blocking tests if you prefer.
 
 This package mostly just binds directly to Zora, but there are a couple
-niceties to help work with Rescript promises and the standard library.
+niceties to help work with ReScript promises and the standard library.
 
 ## If you've used older versions of this package
 
 I've migrated everything to async/await syntax and it now requires
-Rescript 10.1. You'll need to convert any non-blocking tests in your
+ReScript 10.1. You'll need to convert any non-blocking tests in your
 existing codebase to return promise or define them with async, but
 you don't need to throw `done()` calls in all your async tests.
 
 ## Installation
 
-_Note: If you don't have a Rescript 9.1.1 project initialized already, the
+_Note: If you don't have a ReScript 9.1.1 project initialized already, the
 fastest way to get one is with `npx rescript init myproject`._
 
 Install [zora](https://github.com/lorenzofox3/zora) and this package:
@@ -28,36 +28,36 @@ Install [zora](https://github.com/lorenzofox3/zora) and this package:
 npm install --save-dev @dusty-phillips/rescript-zora
 ```
 
-Add `@dusty-phillips/rescript-zora` as a dependency in your `bsconfig.json`:
+Add `@dusty-phillips/rescript-zora` as a dependency in your `rescript.json`:
 
 ```
-"bs-dependencies": ["@dusty-phillips/rescript-zora"]
+"bs-dev-dependencies": ["@dusty-phillips/rescript-zora"]
 ```
 
 ## Suggested configuration
 
 Recent versions of node seem to cooperate better if you explicitly use the .mjs or
-.cjs suffix for your files. So you'll want your bsconfig to contain either:
+.cjs suffix for your files. So you'll want your `rescript.json` to contain either:
 
-- suffix: `.mjs` and module: `es6`
+- suffix: `.mjs` and module: `esmodule`
 - suffix: `.cjs` and module: `commonjs`
 
-I use .mjs in this configuration, but I have tested it with .cjs and it seems
+I use `.mjs` in this configuration, but I have tested it with `.cjs` and it seems
 to work.
 
 You'll probably also want to add the following `package-specs` configuration to
-your `bsconfig.json`:
+your `rescript.json`:
 
 ```json
   "suffix": ".mjs",
   "package-specs": {
-    "module": "es6",
+    "module": "esmodule",
     "in-source": true
   },
 ```
 
 If you like to keep your tests separate from your source code, you'll need to
-add that directory so Rescript will compile your test files:
+add that directory so ReScript will compile your test files:
 
 ```json
   "sources": [
@@ -69,7 +69,7 @@ add that directory so Rescript will compile your test files:
   ],
 ```
 
-So a minimal `bsconfig.json` might look like this:
+So a minimal `rescript.json` might look like this:
 
 ```json
 {
@@ -84,10 +84,10 @@ So a minimal `bsconfig.json` might look like this:
     { "dir": "tests", "subdirs": true, "type": "dev" }
   ],
   "package-specs": {
-    "module": "es6",
+    "module": "esmodule",
     "in-source": true
   },
-  "bs-dependencies": ["@dusty-phillips/rescript-zora"]
+  "bs-dev-dependencies": ["@dusty-phillips/rescript-zora"]
 }
 ```
 
@@ -105,7 +105,7 @@ zoraBlock("should run a test synchronously", t => {
 })
 ```
 
-Building this with rescript will output a `tests/simple.mjs` file that
+Building this with ReScript will output a `tests/simple.mjs` file that
 you can run directly with `node`:
 
 ```tap
@@ -318,13 +318,13 @@ for CI:
 ## Assertions
 
 This library models all the default assertions provided by Zora except for
-those dealing with raising exceptions, which don't map neatly to Rescript
-exceptions. There are additional bindings for checking if a Rescript `option`
+those dealing with raising exceptions, which don't map neatly to ReScript
+exceptions. There are additional bindings for checking if a ReScript `option`
 is `Some()` or `None` or if a `Belt.Result` is `Ok()` or `Error()` and asserting
 on the value therein.
 
 In the interest of avoiding bloat, I do not intend to add a lot of other
-Rescript-specific assertions.
+ReScript-specific assertions.
 
 ```rescript
 //tests/assertions.test.res
@@ -352,14 +352,14 @@ zora("Test assertions", t => {
 ## Running in the browser
 
 Zora supports running tests in the browser, but I have not tested it with this
-Rescript implementation. I am open to PRs that will make this Rescript
+ReScript implementation. I am open to PRs that will make this ReScript
 implementation work in the browser if changes are required.
 
 ## Source Maps
 
 The biggest problem with this library is that test failures point to the lines
-in the compiled js files instead of Rescript itself. If someone knows how to
-configure rescript and zora to use source maps, I'd love a PR.
+in the compiled js files instead of ReScript itself. If someone knows how to
+configure ReScript and zora to use source maps, I'd love a PR.
 
 ## Contributing
 
@@ -369,5 +369,5 @@ PRs are welcome.
 
 This is for my reference
 
-- update the version in `bsconfig.json`
+- update the version in `rescript.json`
 - `npx np`

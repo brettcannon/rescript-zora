@@ -4,7 +4,7 @@ import * as Zora from "zora";
 
 function wait(amount) {
   return new Promise((function (resolve, reject) {
-                setTimeout((function (param) {
+                setTimeout((function () {
                         resolve(undefined);
                       }), amount);
               }));
