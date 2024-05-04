@@ -2,7 +2,7 @@
 
 import * as Zora from "../src/Zora.mjs";
 import * as Zora$1 from "zora";
-import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
 Zora$1.test("Test assertions", (async function (t) {
         t.equal(42, 42, "Numbers are equal");
@@ -24,11 +24,11 @@ Zora$1.test("Test assertions", (async function (t) {
                 t.equal(n.hello, "world", "option should be hello world");
               }));
         Zora.resultError(t, {
-              TAG: /* Error */1,
+              TAG: "Error",
               _0: x
             }, "Is Error Result");
         return Zora.resultOk(t, {
-                    TAG: /* Ok */0,
+                    TAG: "Ok",
                     _0: x
                   }, (function (t, n) {
                       t.equal(n.hello, "world", "Is Ok Result");

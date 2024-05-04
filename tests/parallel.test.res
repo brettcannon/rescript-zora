@@ -4,7 +4,7 @@ let wait = (amount: int) => {
   Js.Promise2.make((~resolve, ~reject) => {
     reject->ignore
     Js.Global.setTimeout(_ => {
-      resolve(. Js.undefined)
+      resolve(Js.undefined)
     }, amount)->ignore
   })
 }
@@ -13,7 +13,7 @@ zora("Some Parallel Tests", async t => {
   let state = ref(0)
 
   t->test("parallel 1", async t => {
-    {await wait(10)}-> ignore
+    {await wait(10)}->ignore
     t->equal(state.contents, 1, "parallel 2 should have incremented by now")
     state.contents = state.contents + 1
     t->equal(state.contents, 2, "parallel 1 should increment")

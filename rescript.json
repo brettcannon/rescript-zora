@@ -10,7 +10,7 @@
     { "dir": "tests", "subdirs": true, "type": "dev" }
   ],
   "package-specs": {
-    "module": "es6-global",
+    "module": "esmodule",
     "in-source": true
   }
 }

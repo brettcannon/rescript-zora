@@ -12,13 +12,16 @@
     "watch": "rescript build -w"
   },
   "keywords": [
-    "ReScript"
+    "rescript",
+    "testing",
+    "zora"
   ],
   "author": "Dusty Phillips",
   "license": "MIT",
   "devDependencies": {
+    "@rescript/core": "^1.3.0",
     "onchange": "^7.1.0",
-    "rescript": "^10.1.2"
+    "rescript": "^11.1.0"
   },
   "dependencies": {
     "pta": "^1.2.0",
