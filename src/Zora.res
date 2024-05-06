@@ -23,14 +23,14 @@ type testMessage = string
 @send external isNot: (t, 't, 't, ~msg: testMessage=?) => unit = "isNot"
 @send external ok: (t, bool, ~msg: testMessage=?) => unit = "ok"
 @send external notOk: (t, bool, ~msg: testMessage=?) => unit = "notOk"
-@send external fail: (t, testMessage) => unit = "fail"
+@send external fail: (t, ~msg: testMessage=?) => unit = "fail"
 
 let optionNone = (zora: t, actual: option<'a>, message: testMessage) => {
   zora->ok(actual->Belt.Option.isNone, ~msg=message)
 }
 let optionSome = (zora: t, actual: option<'a>, check: (t, 'a) => unit) => {
   switch actual {
-  | None => zora->fail("Expected Some value, got None")
+  | None => zora->fail(~msg="Expected Some value, got None")
   | Some(value) => zora->check(value)
   }
 }
@@ -40,7 +40,7 @@ let resultError = (zora: t, actual: Belt.Result.t<'a, 'b>, message: testMessage)
 }
 let resultOk = (zora: t, actual: Belt.Result.t<'a, 'b>, check: (t, 'a) => unit) => {
   switch actual {
-  | Belt.Result.Error(_) => zora->fail("Expected ok value, got error")
+  | Belt.Result.Error(_) => zora->fail(~msg="Expected ok value, got error")
   | Belt.Result.Ok(value) => zora->check(value)
   }
 }
