@@ -38,6 +38,10 @@ Zora$1.test("Test assertions", (async function (t) {
         t.test("Without descriptions", (async function (t) {
                 t.equal(42, 42);
                 t.notEqual(42, 43);
+                var x = {
+                  hello: "world"
+                };
+                t.is(x, x);
               }));
       }));
 

@@ -19,7 +19,7 @@ type testMessage = string
 
 @send external equal: (t, 't, 't, ~msg: testMessage=?) => unit = "equal"
 @send external notEqual: (t, 't, 't, ~msg: testMessage=?) => unit = "notEqual"
-@send external is: (t, 't, 't, testMessage) => unit = "is"
+@send external is: (t, 't, 't, ~msg: testMessage=?) => unit = "is"
 @send external isNot: (t, 't, 't, testMessage) => unit = "isNot"
 @send external ok: (t, bool, testMessage) => unit = "ok"
 @send external notOk: (t, bool, testMessage) => unit = "notOk"
