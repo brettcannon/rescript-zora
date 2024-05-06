@@ -41,7 +41,11 @@ Zora$1.test("Test assertions", (async function (t) {
                 var x = {
                   hello: "world"
                 };
+                var z = {
+                  hello: "world"
+                };
                 t.is(x, x);
+                t.isNot(x, z);
               }));
       }));
 

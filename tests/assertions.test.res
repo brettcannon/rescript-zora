@@ -9,7 +9,7 @@ zora("Test assertions", async t => {
     let z = {"hello": "world"}
     t->is(x, x, ~msg="object is object")
     t->is(x, y, ~msg="object is object")
-    t->isNot(x, z, "object is not object with same values")
+    t->isNot(x, z, ~msg="object is not object with same values")
     t->equal(x, z, ~msg="Object is deep equal")
     t->ok(true, "boolean is ok")
     t->notOk(false, "boolean is not ok")
@@ -26,10 +26,9 @@ zora("Test assertions", async t => {
     t->equal(42, 42)
     t->notEqual(42, 43)
     let x = {"hello": "world"}
-    // let z = {"hello": "world"}
+    let z = {"hello": "world"}
     t->is(x, x)
-    // t->isNot(x, z)
-    // t->equal(x, z)
+    t->isNot(x, z)
     // t->ok(true)
     // t->notOk(false)
     // t->optionNone(None)
