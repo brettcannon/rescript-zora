@@ -46,7 +46,7 @@ let resultError = (zora: t, actual: result<'a, 'b>, ~msg: option<testMessage>=?)
 }
 let resultOk = (zora: t, actual: result<'a, 'b>, check: (t, 'a) => unit) => {
   switch actual {
-  | Error(_) => zora->fail(~msg="Expected ok value, got error")
+  | Error(_) => zora->fail(~msg="Expected Ok value, got Error")
   | Ok(value) => zora->check(value)
   }
 }

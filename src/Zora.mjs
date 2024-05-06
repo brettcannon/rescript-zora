@@ -33,7 +33,7 @@ function resultOk(zora, actual, check) {
   if (actual.TAG === "Ok") {
     return check(zora, actual._0);
   }
-  zora.fail("Expected ok value, got error");
+  zora.fail("Expected Ok value, got Error");
 }
 
 export {
