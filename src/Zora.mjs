@@ -21,8 +21,12 @@ function optionSome(zora, actual, check) {
   }
 }
 
-function resultError(zora, actual, message) {
-  zora.ok(Core__Result.isError(actual), message);
+function resultError(zora, actual, msg) {
+  if (msg !== undefined) {
+    zora.ok(Core__Result.isError(actual), msg);
+  } else {
+    zora.ok(Core__Result.isError(actual));
+  }
 }
 
 function resultOk(zora, actual, check) {

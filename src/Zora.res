@@ -38,8 +38,11 @@ let optionSome = (zora: t, actual: option<'a>, check: (t, 'a) => unit) => {
   }
 }
 
-let resultError = (zora: t, actual: result<'a, 'b>, message: testMessage) => {
-  zora->ok(actual->Result.isError, ~msg=message)
+let resultError = (zora: t, actual: result<'a, 'b>, ~msg: option<testMessage>=?) => {
+  switch msg {
+  | Some(description) => zora->ok(actual->Result.isError, ~msg=description)
+  | None => zora->ok(actual->Result.isError)
+  }
 }
 let resultOk = (zora: t, actual: result<'a, 'b>, check: (t, 'a) => unit) => {
   switch actual {
