@@ -22,7 +22,7 @@ type testMessage = string
 @send external is: (t, 't, 't, ~msg: testMessage=?) => unit = "is"
 @send external isNot: (t, 't, 't, ~msg: testMessage=?) => unit = "isNot"
 @send external ok: (t, bool, ~msg: testMessage=?) => unit = "ok"
-@send external notOk: (t, bool, testMessage) => unit = "notOk"
+@send external notOk: (t, bool, ~msg: testMessage=?) => unit = "notOk"
 @send external fail: (t, testMessage) => unit = "fail"
 
 let optionNone = (zora: t, actual: option<'a>, message: testMessage) => {
