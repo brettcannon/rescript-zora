@@ -25,8 +25,11 @@ type testMessage = string
 @send external notOk: (t, bool, ~msg: testMessage=?) => unit = "notOk"
 @send external fail: (t, ~msg: testMessage=?) => unit = "fail"
 
-let optionNone = (zora: t, actual: option<'a>, message: testMessage) => {
-  zora->ok(actual->Belt.Option.isNone, ~msg=message)
+let optionNone = (zora: t, actual: option<'a>, ~msg: option<testMessage>=?) => {
+  switch msg {
+  | Some(description) => zora->ok(actual->Option.isNone, ~msg=description)
+  | None => zora->ok(actual->Option.isNone)
+  }
 }
 let optionSome = (zora: t, actual: option<'a>, check: (t, 'a) => unit) => {
   switch actual {
@@ -35,12 +38,12 @@ let optionSome = (zora: t, actual: option<'a>, check: (t, 'a) => unit) => {
   }
 }
 
-let resultError = (zora: t, actual: Belt.Result.t<'a, 'b>, message: testMessage) => {
-  zora->ok(actual->Belt.Result.isError, ~msg=message)
+let resultError = (zora: t, actual: result<'a, 'b>, message: testMessage) => {
+  zora->ok(actual->Result.isError, ~msg=message)
 }
-let resultOk = (zora: t, actual: Belt.Result.t<'a, 'b>, check: (t, 'a) => unit) => {
+let resultOk = (zora: t, actual: result<'a, 'b>, check: (t, 'a) => unit) => {
   switch actual {
-  | Belt.Result.Error(_) => zora->fail(~msg="Expected ok value, got error")
-  | Belt.Result.Ok(value) => zora->check(value)
+  | Error(_) => zora->fail(~msg="Expected ok value, got error")
+  | Ok(value) => zora->check(value)
   }
 }

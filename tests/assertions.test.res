@@ -13,13 +13,13 @@ zora("Test assertions", async t => {
     t->equal(x, z, ~msg="Object is deep equal")
     t->ok(true, ~msg="boolean is ok")
     t->notOk(false, ~msg="boolean is not ok")
-    t->optionNone(None, "None is None")
+    t->optionNone(None, ~msg="None is None")
     t->optionSome(
       Some(x),
       (t, n) => t->equal(n["hello"], "world", ~msg="option should be hello world"),
     )
-    t->resultError(Belt.Result.Error(x), "Is Error Result")
-    t->resultOk(Belt.Result.Ok(x), (t, n) => t->equal(n["hello"], "world", ~msg="Is Ok Result"))
+    t->resultError(Error(x), "Is Error Result")
+    t->resultOk(Ok(x), (t, n) => t->equal(n["hello"], "world", ~msg="Is Ok Result"))
   })
 
   t->test("Without descriptions", async t => {
@@ -31,9 +31,9 @@ zora("Test assertions", async t => {
     t->isNot(x, z)
     t->ok(true)
     t->notOk(false)
-    // t->optionNone(None)
+    t->optionNone(None)
     // t->optionSome(Some(x), (t, n) => t->equal(n["hello"], "world"))
-    // t->resultError(Belt.Result.Error(x))
-    // t->resultOk(Belt.Result.Ok(x), (t, n) => t->equal(n["hello"], "world"))
+    // t->resultError(Error(x))
+    // t->resultOk(Ok(x), (t, n) => t->equal(n["hello"], "world"))
   })
 })

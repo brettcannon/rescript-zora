@@ -48,6 +48,7 @@ Zora$1.test("Test assertions", (async function (t) {
                 t.isNot(x, z);
                 t.ok(true);
                 t.notOk(false);
+                return Zora.optionNone(t, undefined, undefined);
               }));
       }));
 
