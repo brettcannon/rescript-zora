@@ -3,7 +3,7 @@ open Zora
 zora("Test assertions", async t => {
   t->test("With descriptions", async t => {
     t->equal(42, 42, ~msg="Numbers are equal")
-    t->notEqual(42, 43, "Numbers are not equal")
+    t->notEqual(42, 43, ~msg="Numbers are not equal")
     let x = {"hello": "world"}
     let y = x
     let z = {"hello": "world"}
@@ -24,12 +24,10 @@ zora("Test assertions", async t => {
 
   t->test("Without descriptions", async t => {
     t->equal(42, 42)
-    // t->notEqual(42, 43)
+    t->notEqual(42, 43)
     // let x = {"hello": "world"}
-    // let y = x
     // let z = {"hello": "world"}
     // t->is(x, x)
-    // t->is(x, y)
     // t->isNot(x, z)
     // t->equal(x, z)
     // t->ok(true)
