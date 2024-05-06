@@ -11,7 +11,7 @@ zora("Test assertions", async t => {
     t->is(x, y, ~msg="object is object")
     t->isNot(x, z, ~msg="object is not object with same values")
     t->equal(x, z, ~msg="Object is deep equal")
-    t->ok(true, "boolean is ok")
+    t->ok(true, ~msg="boolean is ok")
     t->notOk(false, "boolean is not ok")
     t->optionNone(None, "None is None")
     t->optionSome(
@@ -29,7 +29,7 @@ zora("Test assertions", async t => {
     let z = {"hello": "world"}
     t->is(x, x)
     t->isNot(x, z)
-    // t->ok(true)
+    t->ok(true)
     // t->notOk(false)
     // t->optionNone(None)
     // t->optionSome(Some(x), (t, n) => t->equal(n["hello"], "world"))

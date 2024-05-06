@@ -21,12 +21,12 @@ type testMessage = string
 @send external notEqual: (t, 't, 't, ~msg: testMessage=?) => unit = "notEqual"
 @send external is: (t, 't, 't, ~msg: testMessage=?) => unit = "is"
 @send external isNot: (t, 't, 't, ~msg: testMessage=?) => unit = "isNot"
-@send external ok: (t, bool, testMessage) => unit = "ok"
+@send external ok: (t, bool, ~msg: testMessage=?) => unit = "ok"
 @send external notOk: (t, bool, testMessage) => unit = "notOk"
 @send external fail: (t, testMessage) => unit = "fail"
 
 let optionNone = (zora: t, actual: option<'a>, message: testMessage) => {
-  zora->ok(actual->Belt.Option.isNone, message)
+  zora->ok(actual->Belt.Option.isNone, ~msg=message)
 }
 let optionSome = (zora: t, actual: option<'a>, check: (t, 'a) => unit) => {
   switch actual {
@@ -36,7 +36,7 @@ let optionSome = (zora: t, actual: option<'a>, check: (t, 'a) => unit) => {
 }
 
 let resultError = (zora: t, actual: Belt.Result.t<'a, 'b>, message: testMessage) => {
-  zora->ok(actual->Belt.Result.isError, message)
+  zora->ok(actual->Belt.Result.isError, ~msg=message)
 }
 let resultOk = (zora: t, actual: Belt.Result.t<'a, 'b>, check: (t, 'a) => unit) => {
   switch actual {
