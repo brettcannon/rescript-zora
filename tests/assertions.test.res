@@ -1,19 +1,39 @@
 open Zora
 
 zora("Test assertions", async t => {
-  t->equal(42, 42, "Numbers are equal")
-  t->notEqual(42, 43, "Numbers are not equal")
-  let x = {"hello": "world"}
-  let y = x
-  let z = {"hello": "world"}
-  t->is(x, x, "object is object")
-  t->is(x, y, "object is object")
-  t->isNot(x, z, "object is not object with same values")
-  t->equal(x, z, "Object is deep equal")
-  t->ok(true, "boolean is ok")
-  t->notOk(false, "boolean is not ok")
-  t->optionNone(None, "None is None")
-  t->optionSome(Some(x), (t, n) => t->equal(n["hello"], "world", "option should be hello world"))
-  t->resultError(Belt.Result.Error(x), "Is Error Result")
-  t->resultOk(Belt.Result.Ok(x), (t, n) => t->equal(n["hello"], "world", "Is Ok Result"))
+  t->test("With descriptions", async t => {
+    t->equal(42, 42, ~msg="Numbers are equal")
+    t->notEqual(42, 43, ~msg="Numbers are not equal")
+    let x = {"hello": "world"}
+    let y = x
+    let z = {"hello": "world"}
+    t->is(x, x, ~msg="object is object")
+    t->is(x, y, ~msg="object is object")
+    t->isNot(x, z, ~msg="object is not object with same values")
+    t->equal(x, z, ~msg="Object is deep equal")
+    t->ok(true, ~msg="boolean is ok")
+    t->notOk(false, ~msg="boolean is not ok")
+    t->optionNone(None, ~msg="None is None")
+    t->optionSome(
+      Some(x),
+      (t, n) => t->equal(n["hello"], "world", ~msg="option should be hello world"),
+    )
+    t->resultError(Error(x), ~msg="Is Error Result")
+    t->resultOk(Ok(x), (t, n) => t->equal(n["hello"], "world", ~msg="Is Ok Result"))
+  })
+
+  t->test("Without descriptions", async t => {
+    t->equal(42, 42)
+    t->notEqual(42, 43)
+    let x = {"hello": "world"}
+    let z = {"hello": "world"}
+    t->is(x, x)
+    t->isNot(x, z)
+    t->ok(true)
+    t->notOk(false)
+    t->optionNone(None)
+    // optionSome has no ~msg.
+    t->resultError(Error(x))
+    // resultOk has no ~msg.
+  })
 })
