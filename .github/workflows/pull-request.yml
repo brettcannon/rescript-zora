@@ -22,7 +22,8 @@ jobs:
         run: npm run format
 
       - name: Check if any files were changed
-        run: git status --porcelain | grep -zqv .
+        run: if [ -n "$(git status --porcelain)" ]; then (exit 1); fi
+        shell: bash
 
   js-up-to-date:
     name: "JS files up-to-date"
@@ -42,7 +43,8 @@ jobs:
       - run: npm run build
 
       - name: Check if any files were changed
-        run: git status --porcelain | grep -zqv .
+        run: if [ -n "$(git status --porcelain)" ]; then (exit 1); fi
+        shell: bash
 
   test:
     needs: js-up-to-date
