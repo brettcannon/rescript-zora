@@ -18,7 +18,7 @@ zora("Test assertions", async t => {
       Some(x),
       (t, n) => t->equal(n["hello"], "world", ~msg="option should be hello world"),
     )
-    t->resultError(Error(x), ~msg="Is Error Result")
+    t->resultError(Error(x), (t, n) => t->is(x, n, ~msg="Is Error Result"))
     t->resultOk(Ok(x), (t, n) => t->equal(n["hello"], "world", ~msg="Is Ok Result"))
   })
 
@@ -32,8 +32,9 @@ zora("Test assertions", async t => {
     t->ok(true)
     t->notOk(false)
     t->optionNone(None)
-    // optionSome has no ~msg.
-    t->resultError(Error(x))
-    // resultOk has no ~msg.
+    // The following functions have no ~msg dur to their check function argument:
+    //   optionSome
+    //   resultOk
+    //   resultError
   })
 })

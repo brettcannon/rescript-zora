@@ -25,12 +25,17 @@ type testMessage = string
 @send external notOk: (t, bool, ~msg: testMessage=?) => unit = "notOk"
 @send external fail: (t, ~msg: testMessage=?) => unit = "fail"
 
-let optionNone = (zora: t, actual: option<'a>, ~msg: option<testMessage>=?) => {
-  switch msg {
-  | Some(description) => zora->ok(actual->Option.isNone, ~msg=description)
-  | None => zora->ok(actual->Option.isNone)
-  }
+let ignoreValue = (zora: t, _value: 'unimportant): unit => {
+  // Needs to make _some_ check in order to increment the test count.
+  zora->ok(true, ~msg="value is inconsequential")
 }
+
+let optionNone = (zora: t, actual: option<'a>, ~msg: option<testMessage>=?) => {
+  let defaultMessage = "Expected None value, got Some"
+
+  zora->ok(actual->Option.isNone, ~msg=msg->Option.getOr(defaultMessage))
+}
+
 let optionSome = (zora: t, actual: option<'a>, check: (t, 'a) => unit) => {
   switch actual {
   | None => zora->fail(~msg="Expected Some value, got None")
@@ -38,12 +43,13 @@ let optionSome = (zora: t, actual: option<'a>, check: (t, 'a) => unit) => {
   }
 }
 
-let resultError = (zora: t, actual: result<'a, 'b>, ~msg: option<testMessage>=?) => {
-  switch msg {
-  | Some(description) => zora->ok(actual->Result.isError, ~msg=description)
-  | None => zora->ok(actual->Result.isError)
+let resultError = (zora: t, actual: result<'a, 'b>, check: (t, 'a) => unit) => {
+  switch actual {
+  | Ok(_) => zora->fail(~msg="Expected Error value, got Ok")
+  | Error(value) => zora->check(value)
   }
 }
+
 let resultOk = (zora: t, actual: result<'a, 'b>, check: (t, 'a) => unit) => {
   switch actual {
   | Error(_) => zora->fail(~msg="Expected Ok value, got Error")

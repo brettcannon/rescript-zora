@@ -2,14 +2,13 @@
 
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as Core__Option from "@rescript/core/src/Core__Option.mjs";
-import * as Core__Result from "@rescript/core/src/Core__Result.mjs";
+
+function ignoreValue(zora, _value) {
+  zora.ok(true, "value is inconsequential");
+}
 
 function optionNone(zora, actual, msg) {
-  if (msg !== undefined) {
-    zora.ok(Core__Option.isNone(actual), msg);
-  } else {
-    zora.ok(Core__Option.isNone(actual));
-  }
+  zora.ok(Core__Option.isNone(actual), Core__Option.getOr(msg, "Expected None value, got Some"));
 }
 
 function optionSome(zora, actual, check) {
@@ -21,12 +20,11 @@ function optionSome(zora, actual, check) {
   }
 }
 
-function resultError(zora, actual, msg) {
-  if (msg !== undefined) {
-    zora.ok(Core__Result.isError(actual), msg);
-  } else {
-    zora.ok(Core__Result.isError(actual));
+function resultError(zora, actual, check) {
+  if (actual.TAG !== "Ok") {
+    return check(zora, actual._0);
   }
+  zora.fail("Expected Error value, got Ok");
 }
 
 function resultOk(zora, actual, check) {
@@ -37,6 +35,7 @@ function resultOk(zora, actual, check) {
 }
 
 export {
+  ignoreValue ,
   optionNone ,
   optionSome ,
   resultError ,

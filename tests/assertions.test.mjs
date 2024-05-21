@@ -27,7 +27,9 @@ Zora$1.test("Test assertions", (async function (t) {
                 Zora.resultError(t, {
                       TAG: "Error",
                       _0: x
-                    }, "Is Error Result");
+                    }, (function (t, n) {
+                        t.is(x, n, "Is Error Result");
+                      }));
                 return Zora.resultOk(t, {
                             TAG: "Ok",
                             _0: x
@@ -48,11 +50,7 @@ Zora$1.test("Test assertions", (async function (t) {
                 t.isNot(x, z);
                 t.ok(true);
                 t.notOk(false);
-                Zora.optionNone(t, undefined, undefined);
-                return Zora.resultError(t, {
-                            TAG: "Error",
-                            _0: x
-                          }, undefined);
+                return Zora.optionNone(t, undefined, undefined);
               }));
       }));
 

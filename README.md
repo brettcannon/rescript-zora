@@ -12,6 +12,23 @@ niceties to help work with ReScript promises and the standard library.
 
 ## If you've used older versions of this package
 
+### 3 → 4
+
+The code was updated to ReScript 11.
+
+Nearly all check functions have gained an optional `~msg` argument for passing
+in the message for the check. This makes the message optional, defaulting to
+what Zora provides as a message.
+
+The `resultError` function now accepts a check function to verify the value
+contained by the `Error`.
+
+There is a new `ignoreValue` check function to pass to the `option*` and
+`result*` functions when the values are inconsequential and the type of variant
+is the purpose of the test.
+
+### 2 → 3
+
 I've migrated everything to async/await syntax and it now requires
 ReScript 10.1. You'll need to convert any non-blocking tests in your
 existing codebase to return promise or define them with async, but
@@ -101,7 +118,7 @@ open Zora
 
 zoraBlock("should run a test synchronously", t => {
   let answer = 3.14
-  t->equal(answer, 3.14, "Should be a tasty dessert")
+  t->equal(answer, 3.14, ~msg="Should be a tasty dessert")
 })
 ```
 
@@ -137,12 +154,12 @@ open Zora
 
 zoraBlock("Should run some simple blocking tests", t => {
   t->block("should greet", t => {
-    t->ok(true, "hello world")
+    t->ok(true, ~msg="hello world")
   })
 
   t->block("should answer question", t => {
     let answer = 42
-    t->equal(answer, 42, "should be 42")
+    t->equal(answer, 42, ~msg="should be 42")
   })
 })
 ```
@@ -159,12 +176,12 @@ open Zora
 
 zora("should run a test asynchronously", async t => {
   let answer = 42
-  t->equal(answer, 42, "Should answer the question")
+  t->equal(answer, 42, ~msg="Should answer the question")
 })
 
 zora("should run a second test at the same time", async t => {
   let answer = 3.14
-  t->equal(answer, 3.14, "Should be a tasty dessert")
+  t->equal(answer, 3.14, ~msg="Should be a tasty dessert")
 })
 ```
 
@@ -194,22 +211,22 @@ zora("Some Parallel Tests", async t => {
 
   t->test("parallel 1", async t => {
     {await wait(10)}-> ignore
-    t->equal(state.contents, 1, "parallel 2 should have incremented by now")
+    t->equal(state.contents, 1, ~msg="parallel 2 should have incremented by now")
     state.contents = state.contents + 1
-    t->equal(state.contents, 2, "parallel 1 should increment")
+    t->equal(state.contents, 2, ~msg="parallel 1 should increment")
   })
 
   t->test("parallel 2", async t => {
-    t->equal(state.contents, 0, "parallel 2 should be the first to increment")
+    t->equal(state.contents, 0, ~msg="parallel 2 should be the first to increment")
     state.contents = state.contents + 1
-    t->equal(state.contents, 1, "parallel 2 should increment")
+    t->equal(state.contents, 1, ~msg="parallel 2 should increment")
   })
 
   t->test("parallel 3", async t => {
     {await wait(20)}->ignore
-    t->equal(state.contents, 2, "parallel 1 and 2 should have incremented by now")
+    t->equal(state.contents, 2, ~msg="parallel 1 and 2 should have incremented by now")
     state.contents = state.contents + 1
-    t->equal(state.contents, 3, "parallel 3 should increment last")
+    t->equal(state.contents, 3, ~msg="parallel 3 should increment last")
   })
 })
 ```
@@ -259,11 +276,11 @@ open Zora
 
 zora("should skip some tests", t => {
   t->skip("broken test", t => {
-    t->fail("Test is broken")
+    t->fail(~msg="Test is broken")
   })
 
   t->blockSkip("also broken", t => {
-    t->fail("Test is broken, too")
+    t->fail(~msg="Test is broken, too")
   })
 
 })
@@ -282,11 +299,11 @@ open Zora
 
 zoraOnly("should skip some tests", t => {
   t->only("only run this test", t => {
-    t->ok(true, "Only working test")
+    t->ok(true, ~msg="Only working test")
   })
 
   t->test("don't run this test", t => {
-    t->fail("Test is broken")
+    t->fail(~msg="Test is broken")
   })
 
 })
@@ -321,7 +338,9 @@ This library models all the default assertions provided by Zora except for
 those dealing with raising exceptions, which don't map neatly to ReScript
 exceptions. There are additional bindings for checking if a ReScript `option`
 is `Some()` or `None` or if a `Result` is `Ok()` or `Error()` and asserting
-on the value therein.
+on the value therein (except for `None` as there is no value to check). A
+`ignoreValue` function is provided in those instances where asserting on the
+value is unimportant.
 
 In the interest of avoiding bloat, I do not intend to add a lot of other
 ReScript-specific assertions.
@@ -331,21 +350,21 @@ ReScript-specific assertions.
 open Zora
 
 zora("Test assertions", t => {
-  t->equal(42, 42, "Numbers are equal")
-  t->notEqual(42, 43, "Numbers are not equal")
+  t->equal(42, 42, ~msg="Numbers are equal")
+  t->notEqual(42, 43, ~msg="Numbers are not equal")
   let x = {"hello": "world"}
   let y = x
   let z = {"hello": "world"}
-  t->is(x, x, "object is object")
-  t->is(x, y, "object is object")
-  t->isNot(x, z, "object is not object with same values")
-  t->equal(x, z, "Object is deep equal")
-  t->ok(true, "boolean is ok")
-  t->notOk(false, "boolean is not ok")
-  t->optionNone(None, "None is None")
-  t->optionSome(Some(x), (t, n) => t->equal(n["hello"], "world", "option should be hello world"))
-  t->resultError(Error(x), "Is Error Result")
-  t->resultOk(Ok(x), (t, n) => t->equal(n["hello"], "world", "Is Ok Result"))
+  t->is(x, x, ~msg="object is object")
+  t->is(x, y, ~msg="object is object")
+  t->isNot(x, z, ~msg="object is not object with same values")
+  t->equal(x, z, ~msg="Object is deep equal")
+  t->ok(true, ~msg="boolean is ok")
+  t->notOk(false, ~msg="boolean is not ok")
+  t->optionNone(None, ~msg="None is None")
+  t->optionSome(Some(x), (t, n) => t->equal(n["hello"], "world", ~msg="option should be hello world"))
+  t->resultError(Error(x), (t, n) => t->equal(n["hello"], "world", ~msg="Is Error Result"))
+  t->resultOk(Ok(x), (t, n) => t->equal(n["hello"], "world", ~msg="Is Ok Result"))
 })
 ```
 
