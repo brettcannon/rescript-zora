@@ -38,6 +38,8 @@ jobs:
           node-version: latest
           cache: npm
 
+      - run: npm install --include dev
+
       - run: npm run clean
 
       - run: npm run build
@@ -58,6 +60,8 @@ jobs:
         with:
           node-version: latest
           cache: npm
+
+      - run: npm install --include dev
 
       - name: Test
         run: npm run test
