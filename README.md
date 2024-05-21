@@ -12,7 +12,7 @@ niceties to help work with ReScript promises and the standard library.
 
 ## If you've used older versions of this package
 
-### 3 → 4
+### 4 → 5
 
 The code was updated to ReScript 11.
 
@@ -27,7 +27,7 @@ There is a new `ignoreValue` check function to pass to the `option*` and
 `result*` functions when the values are inconsequential and the type of variant
 is the purpose of the test.
 
-### 2 → 3
+### 3 → 4
 
 I've migrated everything to async/await syntax and it now requires
 ReScript 10.1. You'll need to convert any non-blocking tests in your
