@@ -1,0 +1,4 @@
+/.github/
+/lib/
+.bsb.lock
+.merlin
